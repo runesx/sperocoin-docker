@@ -1,4 +1,4 @@
-FROM debian:stable-slim
+FROM ubuntu:14.04
 
 ARG USER_ID
 ARG GROUP_ID
@@ -14,7 +14,8 @@ RUN groupadd -g ${GROUP_ID} sperocoin \
 
 RUN set -ex \
 	&& apt-get update \
-	&& apt-get install -qq --no-install-recommends ca-certificates gosu \
+	&& apt-get install -qq --no-install-recommends ca-certificates \
+	&& apt-get install -y libboost-all-dev libdb5.3-dev libdb5.3++-dev libminiupnpc-dev \
 	&& rm -rf /var/lib/apt/lists/*
 
 # install sperocoin binaries
@@ -23,4 +24,3 @@ COPY /bin/sperocoind /usr/local/bin/
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["sperocoind"]
